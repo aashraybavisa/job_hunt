@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
-import React, { useState } from "react";
+import { View, Text, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Stack, useRouter } from "expo-router";
 import { COLORS, Icons, Images, SIZES } from "../constants";
 import {
@@ -8,10 +8,15 @@ import {
   ScreenHeaderBtn,
   Welcome,
 } from "../components";
+import { getData } from "../utils";
 
 const Home = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const onClickSearch = () => {
     if (searchTerm !== "") {
@@ -29,7 +34,7 @@ const Home = () => {
             <ScreenHeaderBtn
               iconUrl={Icons.menu}
               dimension={"60%"}
-              handlePress={undefined}
+              handlePress={() => router.push(`/resume/resume`)}
             />
           ),
           headerRight: () => (
@@ -45,14 +50,14 @@ const Home = () => {
         }}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ flex: 1, padding: SIZES.medium }}>
+        <View style={styles.container}>
           <Welcome
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
             handleClick={onClickSearch}
           />
           <Popularjobs />
-          <Nearbyjobs />
+          {/* <Nearbyjobs /> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -60,3 +65,7 @@ const Home = () => {
 };
 
 export default Home;
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: SIZES.medium },
+});
